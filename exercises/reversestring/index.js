@@ -64,7 +64,7 @@
         if (!strLength) return "";
 
         const lastLetter = str[strLength - 1];
-        str = str.substring(0, str.length - 1);
+        str = str.substring(0, strLength - 1);
 
         return lastLetter + reverse(str);
     }
