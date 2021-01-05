@@ -14,8 +14,8 @@
         const getSortedArray = (str) =>
             str
             .replace(/[^\w]/g, "")
+            .toLowerCase()
             .split("")
-            .map((letter) => letter.toLowerCase())
             .sort();
 
         const stringAArray = getSortedArray(stringA);
@@ -33,43 +33,60 @@
         }
  */
 
-function anagrams(stringA, stringB) {
-  const stringAFiltered = stringA.replace(/[^\w]/g, "");
-  const stringBFiltered = stringB.replace(/[^\w]/g, "");
+/**
+  *  Solution 2
+    const getFilteredString = (string) => string.replace(/[^\w]/g, "").toLowerCase();
 
-  if (stringAFiltered.length !== stringBFiltered.length) {
-    return false;
-  }
+    const generateCharacterMap = (stringA, stringB) => {
+    const stringACharacterMap = {};
+    const stringBCharacterMap = {};
 
-  const generateCharacterMap = (str) => {
-    const characterMap = {};
+    for (let index = 0; index < stringA.length; index++) {
+        const keyA = stringA[index];
+        const keyB = stringB[index];
 
-    for (let character of str) {
-      if (characterMap[character]) {
-        characterMap[character] += 1;
-      } else {
-        characterMap[character] = 1;
-      }
+        stringACharacterMap[keyA] = stringACharacterMap[keyA] + 1 || 1;
+
+        stringBCharacterMap[keyB] = stringBCharacterMap[keyB] + 1 || 1;
     }
 
-    return characterMap;
-  };
+    return { stringACharacterMap, stringBCharacterMap };
+    };
 
-  const stringACharacterMap = generateCharacterMap(stringAFiltered);
-  const stringBCharacterMap = generateCharacterMap(stringBFiltered);
+    function anagrams(stringA, stringB) {
+    const stringAFiltered = getFilteredString(stringA);
+    const stringBFiltered = getFilteredString(stringB);
 
-  if (
-    Object.keys(stringACharacterMap).length !==
-    Object.keys(stringBCharacterMap).length
-  ) {
-    return false;
-  }
+    if (stringAFiltered.length !== stringBFiltered.length) return false;
 
-  return Object.keys(stringACharacterMap).every(
-    (key) => stringACharacterMap[key] === stringBCharacterMap[key]
+    const { stringACharacterMap, stringBCharacterMap } = generateCharacterMap(
+        stringAFiltered,
+        stringBFiltered
+    );
+
+    if (
+        Object.keys(stringACharacterMap).length !==
+        Object.keys(stringBCharacterMap).length
+    )
+        return false;
+    
+    return Object.keys(stringACharacterMap).every(
+        (key) => stringACharacterMap[key] === stringBCharacterMap[key]
+    ); 
+
+    for (let char in stringACharacterMap) {
+        if (stringACharacterMap[char] !== stringBCharacterMap[char]) return false;
+    }
+
+    return true;
+    }
+  */
+
+function anagrams(stringA, stringB) {
+  return (
+    stringA.replace(/[^\w]/g, "").toLowerCase().split("").sort().join("") ===
+    stringB.replace(/[^\w]/g, "").toLowerCase().split("").sort().join("")
   );
 }
-
-console.log(anagrams("hello", "lloeh"));
 
 module.exports = anagrams;
