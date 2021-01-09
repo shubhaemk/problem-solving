@@ -37,8 +37,6 @@ function pyramid(n) {
   const rowCount = n;
   const columnCount = n + (n - 1);
 
-  const pyramidArray = [];
-
   // starts from 1 because these are steps
   for (let rowIndex = 1; rowIndex <= rowCount; rowIndex++) {
     let rowArray = [];
@@ -47,9 +45,14 @@ function pyramid(n) {
     for (let columnIndex = 0; columnIndex < columnCount; columnIndex++) {
       const columnMid = Math.floor(columnCount / 2);
 
+      // checks is item is a middle one
       const isColumnMid = columnIndex === columnMid;
+
+      // checks if the item is to the left of mid and if yes whether its # or " "
       const isColumnToLeft =
         columnIndex >= columnMid - (rowIndex - 1) && columnIndex < columnMid;
+
+      // checks if the item is to the right of mid and if yes whether its # or " "
       const isColumnToRight =
         columnIndex <= columnMid + (rowIndex - 1) && columnIndex > columnMid;
 
@@ -60,13 +63,8 @@ function pyramid(n) {
       }
     }
 
-    pyramidArray.push(rowArray);
+    console.log(rowArray.join(""));
   }
-
-  pyramidArray.map((step) => {
-    console.log(step.join(""));
-    return null;
-  });
 }
 
 module.exports = pyramid;
