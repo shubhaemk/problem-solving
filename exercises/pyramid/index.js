@@ -33,7 +33,7 @@
     }
  */
 
-function pyramid(n) {
+function pyramidByMe(n) {
   const rowCount = n;
   const columnCount = n + (n - 1);
 
@@ -65,6 +65,28 @@ function pyramid(n) {
 
     console.log(rowArray.join(""));
   }
+}
+
+function pyramid(n, row = 0, step = "") {
+  const columnCount = n + (n - 1);
+  if (row === n) {
+    return;
+  }
+
+  if (step.length === columnCount) {
+    console.log(step);
+    return pyramid(n, ++row);
+  }
+
+  const midPoint = Math.floor(columnCount / 2);
+  let stringToAdd;
+  if (midPoint - row <= step.length && midPoint + row >= step.length) {
+    stringToAdd = "#";
+  } else {
+    stringToAdd = " ";
+  }
+
+  pyramid(n, row, step + stringToAdd);
 }
 
 module.exports = pyramid;
