@@ -15,6 +15,14 @@
 //     [11, 16, 15, 6],
 //     [10,  9,  8, 7]]
 
+[
+  [1, 2, 3, 4, 5],
+  [16, 17, 18, 19, 6],
+  [15, 24, 25, 20, 7],
+  [14, 23, 22, 21, 8],
+  [13, 12, 11, 10, 9],
+];
+
 function matrix(n) {
   let maxNumber = n * n;
   const MOVE_RIGHT = "move_right";
@@ -30,41 +38,100 @@ function matrix(n) {
     spiralMatrix.push(tempArray);
   }
 
-  let rowLimit = n - 1;
-  let columnLimit = n - 1;
+  let rowStart = 0;
+  let rowEnd = n - 1;
+  let columnStart = 0;
+  let columnEnd = n - 1;
+
   let currentRow = 0;
   let currentColumn = 0;
 
-  let currentAction = MOVE_RIGHT;
+  let currentAction = "move_right";
 
   for (let number = 1; number <= maxNumber; number++) {
     spiralMatrix[currentRow][currentColumn] = number;
 
-    console.log({ currentColumn });
-    console.log({ currentRow });
-    console.log({ columnLimit });
-    console.log(spiralMatrix);
+    if (
+      currentRow === rowStart &&
+      currentColumn === columnStart &&
+      currentRow !== 0 &&
+      currentAction !== MOVE_RIGHT
+    ) {
+      currentAction = MOVE_RIGHT;
+      columnStart++;
 
-    if (currentAction === MOVE_RIGHT && currentColumn <= columnLimit) {
+      /**
+         [[1,2,3,4],
+      ->  [12,0,0,5],
+          [11,0,0,6],
+          [10,9,8,7]] 
+       */
+    }
+
+    if (
+      currentRow === rowEnd &&
+      currentColumn === columnStart &&
+      currentAction !== MOVE_UP
+    ) {
+      currentAction = MOVE_UP;
+      rowEnd--;
+      /**
+         [[1,2,3,4],
+          [0,0,0,5],
+          [0,0,0,6],
+      ->  [10,9,8,7]] 
+       */
+    }
+
+    if (
+      currentRow === rowEnd &&
+      currentColumn === columnEnd &&
+      currentAction !== MOVE_LEFT
+    ) {
+      currentAction = MOVE_LEFT;
+      columnEnd--;
+      /**
+         [[1,2,3,4],
+          [0,0,0,5],
+          [0,0,0,6],
+          [0,0,0,7]] <-
+       */
+    }
+
+    if (
+      currentAction === MOVE_RIGHT &&
+      currentColumn === columnEnd &&
+      currentAction !== MOVE_DOWN
+    ) {
+      rowStart++;
+      currentAction = MOVE_DOWN;
+
+      /**
+         [[1,2,3,4], <-
+          [0,0,0,0],
+          [0,0,0,0],
+          [0,0,0,0]] 
+       */
+    }
+
+    if (currentAction === MOVE_RIGHT) {
       currentColumn++;
     }
 
-    if (currentAction === MOVE_DOWN && currentRow <= rowLimit) {
+    if (currentAction === MOVE_DOWN) {
       currentRow++;
     }
 
-    if (currentColumn === columnLimit && currentRow <= rowLimit) {
-      currentAction = MOVE_DOWN;
+    if (currentAction === MOVE_LEFT) {
+      currentColumn--;
     }
 
-    if (currentRow === rowLimit + 1) {
-      break;
+    if (currentAction === MOVE_UP) {
+      currentRow--;
     }
   }
 
-  //console.log(spiralMatrix);
+  return spiralMatrix;
 }
-
-matrix(5);
 
 module.exports = matrix;
